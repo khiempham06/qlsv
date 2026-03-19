@@ -30,7 +30,7 @@ services:
       - DB_PASSWORD=root
     depends_on:
       - db
-    command: sh -c "sleep 10 && php artisan migrate --seed --force && apache2-foreground"
+    command: sh -c "sleep 10 && php artisan migrate --seed --force && chown -R www-data:www-data storage bootstrap/cache && chmod -R 775 storage bootstrap/cache && apache2-foreground"
 
   no-framework-app:
     build:
@@ -48,6 +48,7 @@ services:
       - DB_PASSWORD=root
     depends_on:
       - db
+    command: sh -c "mkdir -p uploads/assignments uploads/submissions uploads/challenges && chown -R www-data:www-data uploads && chmod -R 777 uploads && apache2-foreground"
 
 volumes:
   db_data:
